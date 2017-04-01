@@ -1,4 +1,5 @@
 DEVICE_TREE := device/xiaomi/hydrogen
+BOARD_PATH := device/xiaomi/hydrogen
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := msm8952
@@ -58,7 +59,7 @@ TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
 TW_DEFAULT_BRIGHTNESS := 80
 TW_DEFAULT_EXTERNAL_STORAGE := true
 TW_EXCLUDE_SUPERSU := true
-TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_NTFS_3G := false
 TW_IGNORE_MISC_WIPE_DATA := true
 
 # Asian region languages
@@ -71,3 +72,36 @@ TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 
 # Debug flags
 TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+
+
+# MR config. MultiROM also uses parts of TWRP config
+TARGET_RECOVERY_IS_MULTIROM := true
+MR_NO_KEXEC := 2
+MR_ALLOW_NKK71_NOKEXEC_WORKAROUND := true
+MR_CONTINUOUS_FB_UPDATE := true
+MR_DPI := xhdpi
+MR_DPI_FONT := 340
+MR_USE_MROM_FSTAB := true
+MR_FSTAB := $(BOARD_PATH)/multirom/mrom.fstab
+MR_INPUT_TYPE := type_b
+MR_INIT_DEVICES := $(BOARD_PATH)/multirom/mr_init_devices.c
+MR_KEXEC_MEM_MIN := 0x00200000
+MR_KEXEC_DTB := true
+MR_DEVICE_HOOKS := $(BOARD_PATH)/multirom/mr_hooks.c
+MR_DEVICE_HOOKS_VER := 4
+MR_DEVICE_VARIANTS := hydrogen  
+MR_USE_QCOM_OVERLAY := true
+MR_QCOM_OVERLAY_HEADER := $(BOARD_PATH)/multirom/mr_qcom_overlay.h
+MR_QCOM_OVERLAY_CUSTOM_PIXEL_FORMAT := MDP_RGBX_8888
+# bootmenu
+DEVICE_RESOLUTION := 1080x1920
+MR_PIXEL_FORMAT := "RGBA_8888"
+#RECOVERY_GRAPHICS_USE_LINELENGTH := true
+MR_DEV_BLOCK_BOOTDEVICE := true
+
+#Force populating from the emmc
+MR_POPULATE_BY_NAME_PATH := "/dev/block/platform/soc.0/7824900.sdhci/by-name"
+
+#Enable encryption of mrom
+MR_ENCRYPTION := true
