@@ -105,3 +105,10 @@ MR_POPULATE_BY_NAME_PATH := "/dev/block/platform/soc.0/7824900.sdhci/by-name"
 
 #Enable encryption of mrom
 MR_ENCRYPTION := true
+
+# ANCLARK SPECITIED OPTIONS
+# The following features are new features added to MultiROM's code by AnClark in order to support Qualcomm Snapdragon devices well.
+MR_USE_QCOM_SPECIFIED_FSTAB := true
+MR_FSTAB_FOR_EXTRACTING_BOOTDEV := $(BOARD_PATH)/multirom/mrom.fstab.bootdevice
+MR_USE_KEYMASTER := true
+MR_KEYMASTER_LIB_PATH := $(BOARD_PATH)/multirom/keystore.msm8952.so

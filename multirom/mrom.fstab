@@ -1,11 +1,21 @@
-/boot       emmc   /dev/block/mmcblk0p60
-/recovery   emmc   /dev/block/mmcblk0p61
-/system     ext4   /dev/block/mmcblk0p64
-/data       ext4   /dev/block/mmcblk0p65	flags=encryptable=footer
-/cache      ext4   /dev/block/mmcblk0p62
-/persist	ext4   /dev/block/mmcblk0p57
-/firmware   vfat   /dev/block/mmcblk0p49
-/cust		ext4   /dev/block/mmcblk0p63
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+#<src>                                              <mnt_point>  <type>  <mnt_flags and options>                                                        <fs_mgr_flags>
 
-/sdcard1    auto   /dev/block/mmcblk1p1 
-/usb_otg	vfat   /dev/block/sda1 	/dev/block/sda		flags=display="USB-OTG";storage;wipeingui;removable
+/dev/block/mmcblk0p60                  /boot        emmc    defaults                                                                       recoveryonly
+/dev/block/mmcblk0p61              /recovery    emmc    defaults                                                                       recoveryonly
+/dev/block/mmcblk0p64                /system      ext4    ro,barrier=1,discard                                                           wait
+/dev/block/mmcblk0p65              /data        f2fs    nosuid,nodev,noatime,inline_xattr,data_flush                                   wait,check,encryptable=footer,formattable,length=-16384
+/dev/block/mmcblk0p65              /data        ext4    nosuid,nodev,noatime,barrier=1,noauto_da_alloc                                 wait,check,encryptable=footer,formattable,length=-16384
+/dev/block/mmcblk0p62                 /cache       f2fs    nosuid,nodev,noatime,inline_xattr,flush_merge,data_flush                       wait,check,formattable
+/dev/block/mmcblk0p62                 /cache       ext4    nosuid,nodev,noatime,barrier=1                                                 wait,check,formattable
+/dev/block/mmcblk0p57               /persist     ext4    nosuid,nodev,barrier=1                                                         wait
+/dev/block/mmcblk0p6                /frp         emmc    defaults                                                                       defaults
+/dev/block/mmcblk0p43                  /misc        emmc    defaults                                                                       defaults
+/dev/block/mmcblk0p49                 /firmware    vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:firmware_file:s0     wait
+/dev/block/mmcblk0p58                   /dsp         ext4    nosuid,nodev,barrier=1                                                         wait
+
+# SDCard
+/devices/soc.0/7864900.sdhci/mmc_host*              auto         auto    defaults                                                                       voldmanaged=sdcard1:auto,encryptable=footer
+/devices/platform/msm_hsusb_host/usb*               auto         auto    defaults                                                                       voldmanaged=usb:auto
